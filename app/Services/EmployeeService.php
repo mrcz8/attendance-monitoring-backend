@@ -17,9 +17,9 @@ class EmployeeService implements EmployeeServiceInterface
         $this->employeeRepository = $employeeRepositoryInterface;
     }
 
-    public function list(array $filter = []): Paginate
+    public function list(User $user, array $filter = []): Paginate
     {
-        return $this->employeeRepository->list($filter);
+        return $this->employeeRepository->list($user, $filter);
     }
 
     public function getUserDepartmentsAndShifts(User $user): array

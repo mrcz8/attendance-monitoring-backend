@@ -52,8 +52,7 @@ class AttendanceRecordController extends Controller
         ]);
 
         $file = $request->file('file');
-        // $user = $request->user();
-        $user = User::findOrFail(2);
+        $user = $request->user();
 
         $import = new Excel;
         $data = $import->attendanceLog($file);
@@ -76,8 +75,7 @@ class AttendanceRecordController extends Controller
         ]);
 
         $file = $request->file('file');
-        // $user = $request->user();
-        $user = User::findOrFail(2);
+        $user = $request->user();
 
         $import = new Excel;
         $shifts = $import->shiftSetting($file);

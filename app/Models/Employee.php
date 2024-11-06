@@ -21,6 +21,10 @@ class Employee extends Model
         'updated_at',
     ];
 
+    protected $appends = [
+        'totalLateDurationForMonth'
+    ];
+
     public function department()
     {
         return $this->belongsTo(Department::class);
@@ -39,5 +43,20 @@ class Employee extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getTotalLateDurationForMonthAttribute()
+    {
+        $year = request()->query('year', now()->year);
+        $month = request()->query('month', now()->month);
+
+        $attendanceRecords = $this->attendanceRecords()
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->get();
+
+        return $attendanceRecords->sum(function ($record) {
+            return $record->lateDuration;
+        });
     }
 }

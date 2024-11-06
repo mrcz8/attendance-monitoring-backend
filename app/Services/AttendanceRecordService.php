@@ -28,7 +28,7 @@ class AttendanceRecordService implements AttendanceRecordServiceInterface
 
     public function list(User $user, array $filters = []): Paginate
     {
-        return $this->employeeService->list($filters);
+        return $this->employeeService->list($user, $filters);
     }
 
     public function store(User $user, array $data): array

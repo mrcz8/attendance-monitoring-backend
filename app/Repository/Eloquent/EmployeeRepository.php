@@ -43,7 +43,7 @@ class EmployeeRepository extends BaseRepository implements EmployeeRepositoryInt
         parent::__construct($employee);
     }
 
-    public function list(array $filter = []): Paginate
+    public function list(User $user, array $filter = []): Paginate
     {
         $filters = array_merge($this->defaultFilters, array_filter($filter, fn ($f) => !is_null($f)));
 
@@ -64,7 +64,7 @@ class EmployeeRepository extends BaseRepository implements EmployeeRepositoryInt
             if (!empty($filters['month'])) {
                 $query->whereMonth('date', $filters['month']);
             }
-        }]);
+        }])->where('user_id', $user->id);
 
         // Search Filters
         if (!is_null($filters['q'])) {
