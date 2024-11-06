@@ -19,6 +19,7 @@ class EmployeeController extends Controller
 
     public function list(Request $request, Message $message)
     {
+        $user = $request->user();
         $query = $request->query('q', null);
         $page = $request->query('page', null);
 
@@ -27,7 +28,7 @@ class EmployeeController extends Controller
             'page' => $page,
         ];
 
-        $paginatedItems = $this->employeeService->list($filters);
+        $paginatedItems = $this->employeeService->list($user, $filters);
 
         $message->setContent(200, 'Employees retrieved', '', $paginatedItems->toArray());
 

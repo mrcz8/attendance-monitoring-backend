@@ -8,7 +8,7 @@ use App\Utility\Paginate;
 
 interface EmployeeServiceInterface
 {
-    public function list(array $filters = []): Paginate;
+    public function list(User $user, array $filters = []): Paginate;
 
     public function getUserDepartmentsAndShifts(User $user): array;
 

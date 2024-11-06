@@ -15,7 +15,7 @@ interface EmployeeRepositoryInterface
      */
     public const MAX_PAGE_ITEMS = 15;
 
-    public function list(array $filet = []): Paginate;
+    public function list(User $user, array $filer = []): Paginate;
 
     public function store(User $user, string $name, ?string $biometric, ?int $deptId, ?int $shiftId): Employee;
 

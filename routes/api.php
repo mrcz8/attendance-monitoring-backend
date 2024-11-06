@@ -72,6 +72,3 @@ Route::middleware('auth:sanctum')->group(function () {
         });
     });
 });
-Route::prefix('test')->group(function () {
-    Route::post('/', [AttendanceRecordController::class, 'importAttendanceLogs']);
-});
