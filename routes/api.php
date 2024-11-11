@@ -4,6 +4,7 @@ use App\Http\Controllers\AttendanceRecordController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\GenerateExcelController;
 use App\Http\Controllers\LicenseKeyController;
 use App\Http\Controllers\ShiftController;
 use Illuminate\Http\Request;
@@ -60,6 +61,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/{id}', [EmployeeController::class, 'find']);
             Route::put('/{id}', [EmployeeController::class, 'update']);
             Route::delete('/{id}', [EmployeeController::class, 'delete']);
+            Route::post('/generate', [GenerateExcelController::class, 'generate']);
         });
 
         Route::prefix('attendance')->group(function () {
