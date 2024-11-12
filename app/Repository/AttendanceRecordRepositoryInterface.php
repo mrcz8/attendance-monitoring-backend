@@ -18,4 +18,6 @@ interface AttendanceRecordRepositoryInterface
     public function list(User $user, array $filters = []);
 
     public function store(Employee $employee, array $logs);
+
+    public function summary(User $user, array $filters = []);
 }

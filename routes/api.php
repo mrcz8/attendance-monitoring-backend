@@ -65,6 +65,7 @@ Route::middleware('auth:sanctum')->group(function () {
         });
 
         Route::prefix('attendance')->group(function () {
+            Route::get('/summary', [ClientController::class, 'summary']);
             Route::get('/logs', [AttendanceRecordController::class, 'index']);
         });
 

@@ -46,4 +46,24 @@ class AttendanceRecordRepository extends BaseRepository implements AttendanceRec
             ]);
         }
     }
+
+    public function summary(User $user, array $filters = [])
+    {
+        $query = $this->model->with('employee')
+            ->whereHas('employee', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            });
+
+        if (isset($filters['year'])) {
+            $query->whereYear('date', $filters['year']);
+        }
+        if (isset($filters['month'])) {
+            $query->whereMonth('date', $filters['month']);
+        }
+        if (isset($filters['date'])) {
+            $query->whereDate('date', $filters['date']);
+        }
+
+        return $query->get();
+    }
 }

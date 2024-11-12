@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\LicenseKey;
 use App\Models\User;
 use App\Modules\Message\Message;
+use App\Services\AttendanceRecordServiceInterface;
 use App\Services\ClientServiceInterface;
 use App\Services\LicenseKeyServiceInterface;
 use Illuminate\Http\Request;
@@ -15,11 +16,16 @@ class ClientController extends Controller
 
     protected LicenseKeyServiceInterface $licenseKeyService;
 
-    public function __construct(ClientServiceInterface $clientServiceInterface, LicenseKeyServiceInterface $licenseKeyServiceInterface)
-    {
+    protected AttendanceRecordServiceInterface $attendanceRecordService;
 
+    public function __construct(
+        ClientServiceInterface $clientServiceInterface,
+        LicenseKeyServiceInterface $licenseKeyServiceInterface,
+        AttendanceRecordServiceInterface $attendanceRecordServiceInterface)
+    {
         $this->clientService = $clientServiceInterface;
         $this->licenseKeyService = $licenseKeyServiceInterface;
+        $this->attendanceRecordService = $attendanceRecordServiceInterface;
     }
 
     public function list(Request $request, Message $message)
@@ -192,4 +198,19 @@ class ClientController extends Controller
         return $message->render();
     }
 
+    public function summary(Request $request)
+    {
+        $user = $request->user();
+        $month = $request->query('month', date('m'));
+        $year = $request->query('year', date('Y'));
+
+        $filters = [
+            'month' => $month,
+            'year' => $year,
+        ];
+
+        $summary = $this->attendanceRecordService->summary($user, $filters);
+
+        return response()->json($summary);
+    }
 }
