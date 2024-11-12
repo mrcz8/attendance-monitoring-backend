@@ -120,4 +120,39 @@ class AttendanceRecordService implements AttendanceRecordServiceInterface
             }
         }
     }
+
+    public function summary(User $user, array $filters = [])
+    {
+        $summary = $this->attendanceRecordRepository->summary($user, $filters);
+
+        $onTimeCount = $summary->filter(fn($record) => !$record->isLate && !$record->isAbsent)->count();
+        $lateCount = $summary->filter(fn($record) => $record->isLate)->count();
+        $undertimeCount = $summary->filter(fn($record) => $record->isUnderTime)->count();
+        $absentCount = $summary->filter(fn($record) => $record->isAbsent)->count();
+
+        $today = date('Y-m-d');
+        $dailySummary = $this->attendanceRecordRepository->summary($user, ['date' => $today]);
+
+        $dailyOnTimeCount = $dailySummary->filter(fn($record) => !$record->isLate && !$record->isAbsent)->count();
+        $dailyLateCount = $dailySummary->filter(fn($record) => $record->isLate)->count();
+        $dailyUndertimeCount = $dailySummary->filter(fn($record) => $record->isUnderTime)->count();
+        $dailyAbsentCount = $dailySummary->filter(fn($record) => $record->isAbsent)->count();
+
+        return [
+            'monthlySummary' => [
+                'onTime' => $onTimeCount,
+                'late' => $lateCount,
+                'undertime' => $undertimeCount,
+                'absent' => $absentCount,
+                'totalEmployee' => $summary->count(),
+            ],
+            'dailySummary' => [
+                'onTime' => $dailyOnTimeCount,
+                'late' => $dailyLateCount,
+                'undertime' => $dailyUndertimeCount,
+                'absent' => $dailyAbsentCount,
+                'totalEmployee' => $summary->count(),
+            ]
+        ];
+    }
 }
