@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GenerateExcelController;
 use App\Http\Controllers\LicenseKeyController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShiftController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,8 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('me', function (Request $request) {
                 return $request->user();
             });
+            Route::put('/update', [ProfileController::class, 'update']);
+            Route::put('/changePassword', [ProfileController::class, 'changePassword']);
         });
 
         Route::prefix('client')->group(function () {
