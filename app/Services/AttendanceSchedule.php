@@ -24,8 +24,8 @@ class AttendanceSchedule
 
     public function generateReport($user, $year, $month)
     {
-        $this->setupAttendanceSettingSheet($user);
         $this->setupScheduleSettingSheet($user, $year, $month);
+        $this->setupAttendanceSettingSheet($user);
 
         $this->spreadsheet->setActiveSheetIndex(1);
 
@@ -261,7 +261,7 @@ class AttendanceSchedule
 
         $sheet->getStyle('A1:G29')->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 
-        $shifts = Shift::where('user_id', $user->id);
+        $shifts = Shift::where('user_id', $user->id)->get();
         $row = 6;
         foreach ($shifts as $index => $shift) {
             $sheet->setCellValue("A{$row}", $index + 1);

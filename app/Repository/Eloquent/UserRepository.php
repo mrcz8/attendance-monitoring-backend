@@ -34,4 +34,30 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
         return $user;
     }
+
+    public function update(int $id, string $email, string $name): bool
+    {
+        $user = $this->find($id);
+        $user->email = $email;
+        $user->name = $name;
+
+        $isSuccess = DB::transaction(function() use($user) {
+            $isUserUpdated = $user->save();
+            return $isUserUpdated;
+        });
+
+        return $isSuccess;
+    }
+
+    public function changePassword(int $id, string $newPassword): bool
+    {
+        $user = $this->find($id);
+        $user->password = bcrypt($newPassword);
+
+        $isSuccess = DB::transaction(function() use($user) {
+            return $user->save();
+        });
+
+        return $isSuccess;
+    }
 }

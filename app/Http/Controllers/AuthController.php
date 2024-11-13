@@ -22,6 +22,7 @@ class AuthController extends Controller
 
         $exposedAttributes = [
             'id',
+            'email',
             'name',
             'role',
         ];
